@@ -1,0 +1,148 @@
+((*- extends 'style_jupyter.tex.j2' -*))
+
+((* block docclass *))
+\documentclass[
+((*- if nb.metadata["latex_metadata"]: -*))
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]: -*))
+((*- if nb.metadata["latex_metadata"]["options"]["en"]: -*))
+en,
+((*- endif *))
+((*- if not nb.metadata["latex_metadata"]["options"]["nomint"]: -*))
+minted,
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["landscape"]: -*))
+landscape,
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["nocolor"]: -*))
+nocolor,
+((*- endif *))
+((*- if not nb.metadata["latex_metadata"]["options"]["bib"]: -*))
+nobib,
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["nofonts"]: -*))
+nofonts,
+((*- endif *))
+((*- if not nb.metadata["latex_metadata"]["options"]["glo"]: -*))
+noglo,
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["nologos"]: -*))
+nologos,
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["notable"]: -*))
+notable,
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["notitle"]: -*))
+notitle,
+((*- endif *))((*- if nb.metadata["latex_metadata"]["options"]["notoc"]: -*))
+notoc,
+((*- endif *))
+((*- if not nb.metadata["latex_metadata"]["options"]["pardent"]: -*))
+parskip,
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["sans"]: -*))
+sans,
+((*- endif *))
+((*- else -*))
+parskip
+((*- endif *))
+]{protocol}
+((* endblock docclass *))
+
+((* block title -*))
+\title{((( nb.metadata["latex_metadata"]["title"] )))}
+((*- endblock title *))
+((* block author -*))
+\author{((( nb.metadata["latex_metadata"]["author"] )))}
+((* endblock author *))
+
+((* block definitions *))
+((( super() )))
+
+((*- if nb.metadata["latex_metadata"]["subtitle"]: -*))
+    \mysubtitle{((( nb.metadata["latex_metadata"]["subtitle"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["subject"]: -*))
+    \mysubject{((( nb.metadata["latex_metadata"]["subject"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["course"]: -*))
+    \mycourse{((( nb.metadata["latex_metadata"]["course"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["teacher"]: -*))
+    \myteacher{((( nb.metadata["latex_metadata"]["teacher"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["version"]: -*))
+    \myversion{((( nb.metadata["latex_metadata"]["version"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["begin"]: -*))
+    \mybegin{((( nb.metadata["latex_metadata"]["begin"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["finish"]: -*))
+    \myfinish{((( nb.metadata["latex_metadata"]["finish"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["options"]["codebg"]: -*))
+    \setcode{bgcolor=((( nb.metadata["latex_metadata"]["options"]["codebg"] )))}
+((*- endif *))
+((*- if nb.metadata["latex_metadata"]["mint-style"]: -*))
+    \usemintedstyle{((( nb.metadata["latex_metadata"]["mint-style"] )))}
+((*- endif *))
+((* endblock definitions *))
+
+((* block maketitle *))((* endblock maketitle *))
+
+((* block abstract *))
+((*- if nb.metadata["latex_metadata"]["abstract"]: -*))
+\begin{abstract}
+((( nb.metadata["latex_metadata"]["abstract"] )))
+\end{abstract}
+((*- endif *))
+((* endblock abstract *))
+
+%===============================================================================
+% Input
+%===============================================================================
+
+% Input cells can be hidden using the "Hide input" and "Hide input all"
+% nbextensions (which set the hide_input metadata flags)
+
+((* block input scoped *))
+((*- if cell.metadata.hide_input or nb.metadata.hide_input: -*))
+((*- else -*))
+   ((( custom_add_prompt(cell.source | wrap_text(88) | highlight_code(strip_verbatim=True), cell, 'In ', 'incolor') )))
+((*- endif *))
+((* endblock input *))
+
+
+%===============================================================================
+% Output
+%===============================================================================
+
+((* block output_group -*))
+((*- if cell.metadata.hide_output: -*))
+((*- else -*))
+    ((( super() )))
+((*- endif -*))
+((* endblock output_group *))
+
+% Display stream ouput with coloring
+((* block stream *))
+    \begin{Verbatim}[commandchars=\\\{\}]
+((( output.text | wrap_text(86) | escape_latex | ansi2latex )))
+    \end{Verbatim}
+((* endblock stream *))
+
+%==============================================================================
+% Define macro custom_add_prompt() (derived from add_prompt() macro in style_ipython.tplx)
+%==============================================================================
+
+((* macro custom_add_prompt(text, cell, prompt, prompt_color) -*))
+    ((*- if cell.execution_count is defined -*))
+    ((*- set execution_count = "" ~ (cell.execution_count | replace(None, " ")) -*))
+    ((*- else -*))
+    ((*- set execution_count = " " -*))
+    ((*- endif -*))
+    ((*- set indention =  " " * (execution_count | length + 7) -*))
+\begin{Verbatim}[commandchars=\\\{\}]
+((( text )))
+\end{Verbatim}
+((*- endmacro *))

@@ -1,0 +1,4 @@
+setuptools~=50.3.2
+nbconvert~=6.0.7
+
+nbformat~=5.0.8
