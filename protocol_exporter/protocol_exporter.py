@@ -31,14 +31,14 @@ class ProtocolExporter(PDFExporter):
             'ExecutePreprocessor': {
                 'enabled': True
             },
-            'RemoveMagicPreprocessor': {
-                'enabled': True
-            },
             'TagRemovePreprocessor': {
                 'enabled': True,
                 'remove_all_outputs_tags': {'silent'},
                 'remove_cell_tags': {'exclude'},
                 'remove_input_tags': {'hidden'}
+            },
+            'RemoveMagicPreprocessor': {
+                'enabled': True
             },
             'HighlightMagicsPreprocessor': {
                 'enabled': False
