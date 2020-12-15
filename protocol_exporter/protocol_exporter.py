@@ -27,11 +27,10 @@ class ProtocolExporter(PDFExporter):
     @default("default_preprocessors")
     def _default_preprocessors_default(self):
         return [
-            'nbconvert.preprocessors.TagRemovePreprocessor',
             'nbconvert.preprocessors.RegexRemovePreprocessor',
             'nbconvert.preprocessors.ClearOutputPreprocessor',
             'nbconvert.preprocessors.ExecutePreprocessor',
-            'protocol_exporter.TagRemovePreprocessorAfter',
+            'nbconvert.preprocessors.TagRemovePreprocessor',
             'nbconvert.preprocessors.coalesce_streams',
             'nbconvert.preprocessors.SVG2PDFPreprocessor',
             'nbconvert.preprocessors.LatexPreprocessor',
@@ -49,13 +48,11 @@ class ProtocolExporter(PDFExporter):
             },
             'TagRemovePreprocessor': {
                 'enabled': True,
-                'remove_cell_tags': {'run_only'}
+                'remove_all_outputs_tags': {'silent'},
+                'remove_cell_tags': {'exclude', 'run_only'},
+                'remove_input_tags': {'hidden', 'output_only'}
             },
             'TagRemovePreprocessorAfter': {
-                'enabled': True,
-                'remove_all_outputs_tags': {'silent'},
-                'remove_cell_tags': {'exclude'},
-                'remove_input_tags': {'hidden'}
             },
             'RemoveMagicPreprocessor': {
                 'enabled': True
