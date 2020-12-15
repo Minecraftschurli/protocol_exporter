@@ -2,7 +2,7 @@ import os
 import os.path
 
 from nbconvert.exporters.pdf import PDFExporter
-from traitlets.config import Config
+from traitlets.config import Config, default
 
 
 class ProtocolExporter(PDFExporter):
@@ -24,6 +24,22 @@ class ProtocolExporter(PDFExporter):
         """
         return 'protocol'
 
+    @default("default_preprocessors")
+    def _default_preprocessors_default(self):
+        return [
+            'nbconvert.preprocessors.TagRemovePreprocessor',
+            'nbconvert.preprocessors.RegexRemovePreprocessor',
+            'nbconvert.preprocessors.ClearOutputPreprocessor',
+            'nbconvert.preprocessors.ExecutePreprocessor',
+            'protocol_exporter.TagRemovePreprocessorAfter',
+            'nbconvert.preprocessors.coalesce_streams',
+            'nbconvert.preprocessors.SVG2PDFPreprocessor',
+            'nbconvert.preprocessors.LatexPreprocessor',
+            'nbconvert.preprocessors.HighlightMagicsPreprocessor',
+            'nbconvert.preprocessors.ExtractOutputPreprocessor',
+            'nbconvert.preprocessors.ClearMetadataPreprocessor',
+        ]
+
     @property
     def default_config(self):
         c = super().default_config
@@ -32,6 +48,10 @@ class ProtocolExporter(PDFExporter):
                 'enabled': True
             },
             'TagRemovePreprocessor': {
+                'enabled': True,
+                'remove_cell_tags': {'run_only'}
+            },
+            'TagRemovePreprocessorAfter': {
                 'enabled': True,
                 'remove_all_outputs_tags': {'silent'},
                 'remove_cell_tags': {'exclude'},
