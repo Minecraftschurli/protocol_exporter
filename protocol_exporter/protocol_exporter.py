@@ -52,8 +52,6 @@ class ProtocolExporter(PDFExporter):
                 'remove_cell_tags': {'exclude', 'run_only'},
                 'remove_input_tags': {'hidden', 'output_only'}
             },
-            'TagRemovePreprocessorAfter': {
-            },
             'RemoveMagicPreprocessor': {
                 'enabled': True
             },
