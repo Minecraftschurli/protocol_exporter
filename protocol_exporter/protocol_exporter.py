@@ -15,9 +15,8 @@ class ProtocolExporter(PDFExporter):
     # `export_from_notebook` class member
     export_from_notebook = "Protocol"
 
-    @default("template_paths")
-    def _template_paths_default(self):
-        return super().template_paths+[os.path.join(os.path.dirname(__file__), "templates")]
+    def _template_data_paths_default(self):
+        return super()._template_data_paths_default()+[os.path.join(os.path.dirname(__file__), "templates")]
 
     def _template_file_default(self):
         """
@@ -61,3 +60,8 @@ class ProtocolExporter(PDFExporter):
             }
         }))
         return c
+
+    def from_notebook_node(self, nb, resources=None, **kw):
+        self.log.debug("Converting to Protocol")
+        self.log.debug("    template paths: %s" % self.template_paths)
+        return super().from_notebook_node(nb, resources, **kw)
