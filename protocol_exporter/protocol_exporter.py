@@ -15,8 +15,9 @@ class ProtocolExporter(PDFExporter):
     # `export_from_notebook` class member
     export_from_notebook = "Protocol"
 
-    def _template_data_paths_default(self):
-        return super()._template_data_paths_default()+[os.path.join(os.path.dirname(__file__), "templates")]
+    @default("template_paths")
+    def _template_paths_default(self):
+        return super().template_paths+[os.path.join(os.path.dirname(__file__), "templates")]
 
     def _template_file_default(self):
         """
