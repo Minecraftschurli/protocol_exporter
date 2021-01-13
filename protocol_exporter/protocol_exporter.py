@@ -63,5 +63,5 @@ class ProtocolExporter(PDFExporter):
 
     def from_notebook_node(self, nb, resources=None, **kw):
         self.log.debug("Converting to Protocol")
-        self.log.debug("    template paths: %s" % self._template_paths())
+        self.log.debug("    template paths: %s" % self.template_paths)
         return super().from_notebook_node(nb, resources, **kw)
